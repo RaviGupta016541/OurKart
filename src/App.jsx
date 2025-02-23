@@ -7,6 +7,7 @@ import Header from './components/header/Header'
 import { BrowserRouter,Route, Routes } from 'react-router-dom'
 import About from './components/about/About'
 import ContactUs from './components/contactus/ContactUs '
+import ViewProduct from './components/product/ViewProduct'
 
 
 
@@ -21,6 +22,7 @@ function App() {
         <Route path='/' element={<Home/>} />
         <Route path='/about' element={<About/>} />
         <Route path='/contact' element={<ContactUs/>} />
+        <Route path='/product/:id' element={<ViewProduct/>} />
       </Routes>
      </BrowserRouter>
      

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -29,12 +29,15 @@ const Home = () => {
     }
     return description;
   };
-  if (loading) return <div class="text-center">
-  <div class="spinner-border" style={{width: '3rem', height: '3rem'}} role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-</div>;
-  if (error) return <div>{error}</div>;
+
+  if (loading) return (
+    <div className="text-center spinner-container">
+      <div className="spinner-border" style={{ width: '3rem', height: '3rem' }} role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  );
+  if (error) return <div className="alert alert-danger">{error}</div>;
 
   return (
     <div className="container mt-5">
@@ -42,26 +45,40 @@ const Home = () => {
       <div className="row">
         {products.map((product) => {
           // Format the price to 2 decimal places
-          const formattedPrice = product.price.toFixed(2);
+          const formattedPrice = (product.price * 10).toFixed(2);
           const formattedRating = product.rating.toFixed(1);
           const truncatedDescription = truncateDescription(product.description);
 
           return (
             <div key={product.id} className="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4">
-              <div className="card" style={{ width: '18rem',height:'500px' }}>
+              <div className="card shadow-sm border-light rounded-lg overflow-hidden h-100">
                 <img
                   src={product.images[0]}
                   className="card-img-top"
                   alt={product.title}
-                  style={{ height: '250px', width: '100%',objectFit: 'contain' }} // Fixing image size
+                  style={{
+                    height: '250px',
+                    objectFit: 'contain',
+                    transition: 'transform 0.3s ease',
+                  }}
+                  onMouseOver={(e) => e.target.style.transform = 'scale(1.05)'}
+                  onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
                 />
-                <div className="card-body">
+                <div className="card-body d-flex flex-column">
                   <h5 className="card-title" style={{ minHeight: '40px', overflow: 'hidden' }}>{product.title}</h5>
-                  <span class="badge rounded-pill text-bg-success">{formattedRating}⭐</span>
-                  <p className="card-text" style={{ minHeight: '40px', overflow: 'hidden' }}>{truncatedDescription}</p>
-                  <p><strong>Price: ₹{formattedPrice}</strong></p>
-                  <a href="#" className="btn btn-primary">Add to Cart</a>
-                  <a href="#" className="btn btn-secondary ms-2">View More</a>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <span className="badge rounded-pill text-bg-success small">{formattedRating}⭐</span>
+                  </div>
+                  <p className="card-text" style={{ minHeight: '40px', overflow: 'hidden' }}>
+                    {truncatedDescription}
+                  </p>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <p className="text-primary font-weight-bold">₹{formattedPrice}</p>
+                    <div>
+                      <Link to={`/product/${product.id}`} className="btn btn-primary btn-sm">Add to Cart</Link>
+                      <Link to={`/product/${product.id}`} className="btn btn-outline-secondary btn-sm ms-2">View More</Link>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

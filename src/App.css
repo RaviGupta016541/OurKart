@@ -2,3 +2,18 @@
   text-decoration: none;
   
 }
+/* Centering the spinner */
+.spinner-container {
+  color: blue;
+  display: flex;
+  justify-content: center; /* Horizontal centering */
+  align-items: center;     /* Vertical centering */
+  position: fixed;         /* Fix it on screen */
+  top: 40%;                /* Position it at the middle of the screen vertically */
+  left: 50%;               /* Position it at the middle of the screen horizontally */
+  transform: translate(-50%, -50%); /* Offset the element by 50% of its own size */
+  height: 100vh;           /* Full viewport height */
+  width: 100vw;            /* Full viewport width */
+  background-color: rgba(255, 255, 255, 0.5); /* Optional: semi-transparent background */
+  z-index: 9999;           /* Ensure the spinner is on top of other elements */
+}

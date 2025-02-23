@@ -1,7 +1,15 @@
-import React from "react";
+import React ,{useContext}from "react";
 import {Link} from 'react-router-dom'
+import { store } from "../../App";
 
 const Header = () => {
+
+    const [cart,setCart]=useContext(store)
+
+    const CartLength=()=>{
+        console.log( cart.length);
+    }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
@@ -30,7 +38,8 @@ const Header = () => {
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <button className="btn btn-outline-primary me-3">
-                <i className="bi bi-cart"></i> Cart
+                <span class="badge text-bg-primary rounded-pill m-1">{cart.length}</span>
+                <i className="bi bi-cart"></i> Cart 
               </button>
             </li>
             <li className="nav-item">

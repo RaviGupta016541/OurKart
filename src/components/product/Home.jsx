@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { store } from '../../App';
+
+
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const [cart,setCart]=useContext(store)
   useEffect(() => {
     // Fetch data using axios
     axios.get('https://dummyjson.com/products')
@@ -20,6 +23,27 @@ const Home = () => {
         setLoading(false);
       });
   }, []);
+
+  
+  const updateCart=(id,title,price)=>{
+    const cartObj = {
+        id,
+        title,
+        price,
+        quantity: 1, 
+      };
+
+    const existingProduct = cart.find(c => c.id === cartObj.id);
+
+    if(existingProduct){
+        alert("Product already added.")
+    }else{
+        setCart([...cart,cartObj]);
+    }
+    console.log(cartObj)
+  }
+
+
 
   // Function to truncate description to 10 words
   const truncateDescription = (description) => {
@@ -40,6 +64,8 @@ const Home = () => {
   if (error) return <div className="alert alert-danger">{error}</div>;
 
   return (
+      
+            
     <div className="container mt-5">
       <h1 className="text-center mb-4">Products</h1>
       <div className="row">
@@ -75,17 +101,22 @@ const Home = () => {
                   <div className="d-flex justify-content-between align-items-center">
                     <p className="text-primary font-weight-bold">₹{formattedPrice}</p>
                     <div>
-                      <Link to={`/product/${product.id}`} className="btn btn-primary btn-sm">Add to Cart</Link>
+                      <button  className="btn btn-primary btn-sm" onClick={()=>updateCart(product.id,product.title,product.price)}>Add to Cart</button>
                       <Link to={`/product/${product.id}`} className="btn btn-outline-secondary btn-sm ms-2">View More</Link>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+          
+
           );
+          
+          
         })}
       </div>
     </div>
+        
   );
 };
 

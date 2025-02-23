@@ -1,7 +1,6 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
+import React, { useEffect, useState,createContext } from 'react';
 import Home from './components/product/Home'
 import Header from './components/header/Header'
 import { BrowserRouter,Route, Routes } from 'react-router-dom'
@@ -9,14 +8,20 @@ import About from './components/about/About'
 import ContactUs from './components/contactus/ContactUs '
 import ViewProduct from './components/product/ViewProduct'
 
+export const store=createContext();
 
 
 
 function App() {
 
+  const [cart,setCart]=useState([])
   return (
     <>
+
+
      <BrowserRouter>
+     <store.Provider value={[cart,setCart]} >
+
       <Header/>
       <Routes>
         <Route path='/' element={<Home/>} />
@@ -24,6 +29,7 @@ function App() {
         <Route path='/contact' element={<ContactUs/>} />
         <Route path='/product/:id' element={<ViewProduct/>} />
       </Routes>
+     </store.Provider>
      </BrowserRouter>
      
     </>

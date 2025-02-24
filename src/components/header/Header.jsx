@@ -36,12 +36,14 @@ const Header = () => {
             </Link>
           </ul>
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+          <Link to='/cart' className="textDecorate">
             <li className="nav-item">
               <button className="btn btn-outline-primary me-3">
                 <span class="badge text-bg-primary rounded-pill m-1">{cart.length}</span>
                 <i className="bi bi-cart"></i> Cart 
               </button>
             </li>
+          </Link>
             <li className="nav-item">
               <button className="btn btn-primary">Login</button>
             </li>

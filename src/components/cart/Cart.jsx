@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { store } from '../../App';
 
 const Cart = () => {
-  const [cart, setCart] = useContext(store);
+  const { cart,setCart }= useContext(store);
 
   // Update quantity
   const updateQuantity = (id, increment) => {

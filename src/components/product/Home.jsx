@@ -9,7 +9,7 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [cart,setCart]=useContext(store)
+  const {cart,setCart}=useContext(store)
   useEffect(() => {
     // Fetch data using axios
     axios.get('https://dummyjson.com/products')

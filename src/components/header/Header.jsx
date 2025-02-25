@@ -1,51 +1,81 @@
-import React ,{useContext}from "react";
-import {Link} from 'react-router-dom'
+import React, { useContext } from "react";
+import { Link, useNavigate } from 'react-router-dom';
 import { store } from "../../App";
 
 const Header = () => {
+  const { cart, user, setUser } = useContext(store);
+  const navigate = useNavigate();
 
-    const [cart,setCart]=useContext(store)
-
-    const CartLength=()=>{
-        console.log( cart.length);
-    }
+  // Handle logout functionality
+  const handleLogout = () => {
+    setUser({}); // Clear user data in context (you can also clear from localStorage if using it)
+    navigate('/login'); // Redirect to login page
+  };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div className="container">
-        <a className="navbar-brand" href="#">OurKart</a>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <Link to="/" className="navbar-brand text-primary fw-bold">
+          OurKart
+        </Link>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span className="navbar-toggler-icon"></span>
         </button>
+
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <Link to='/' className="textDecorate">
             <li className="nav-item">
-              <a className="nav-link active">Home</a>
+              <Link to="/" className="nav-link text-dark">
+                Home
+              </Link>
             </li>
-            </Link>
-            <Link to='/about' className="textDecorate">
             <li className="nav-item">
-              <a className="nav-link" >About</a>
+              <Link to="/about" className="nav-link text-dark">
+                About
+              </Link>
             </li>
-            </Link>
-            <Link to='/contact' className="textDecorate">
             <li className="nav-item">
-              <a className="nav-link" >Contact Us</a>
+              <Link to="/contact" className="nav-link text-dark">
+                Contact Us
+              </Link>
             </li>
-            </Link>
           </ul>
+
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-          <Link to='/cart' className="textDecorate">
+            {/* Cart */}
             <li className="nav-item">
-              <button className="btn btn-outline-primary me-3">
-                <span class="badge text-bg-primary rounded-pill m-1">{cart.length}</span>
-                <i className="bi bi-cart"></i> Cart 
-              </button>
+              <Link to="/cart" className="text-decoration-none">
+                <button className="btn btn-outline-primary position-relative mx-3">
+                  <span className="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-circle">
+                    {cart.length}
+                  </span>
+                  <i className="bi bi-cart"></i> Cart
+                </button>
+              </Link>
             </li>
-          </Link>
+
+            {/* Login/Logout */}
             <li className="nav-item">
-              <button className="btn btn-primary">Login</button>
+              {user.username ? (
+                <>
+                  <span className="me-2 text-dark">Hello, {user.username}</span>
+                  <button className="btn btn-outline-danger" onClick={handleLogout}>
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <button className="btn btn-outline-primary" onClick={() => navigate('/login')}>
+                  Login
+                </button>
+              )}
             </li>
           </ul>
         </div>

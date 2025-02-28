@@ -1,8 +1,24 @@
 import React, { useState, useContext } from 'react';
 import { store } from '../../App';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Cart = () => {
-  const { cart,setCart }= useContext(store);
+  const { cart,setCart ,user}= useContext(store);
+  const navigate = useNavigate();
+  const notify = (type, message) => {
+    // Dynamically call the correct toast method based on the `type`
+    if (type === 'error') {
+      toast.error(message);
+    } else if (type === 'success') {
+      toast.success(message);
+    } else if (type === 'info') {
+      toast.info(message);
+    } else {
+      toast(message); 
+    }
+  };
+  
 
   // Update quantity
   const updateQuantity = (id, increment) => {
@@ -12,7 +28,8 @@ const Cart = () => {
 
         // Check if the new quantity exceeds the maximum limit of 3
         if (newQuantity > 3) {
-          alert('You can only order a maximum of 3 items for any product.');
+          //alert('');/
+          notify('error','You can only order a maximum of 3 items for any product.');
           return item; // Return the item without updating the quantity if the limit is exceeded
         }
 
@@ -37,8 +54,18 @@ const Cart = () => {
 
   // Handle checkout
   const handleCheckout = () => {
-    alert('Proceeding to checkout...');
+    if (user && user.length !== 0) {  
+      console.log(user.length);
+      notify('success','Proceeding to checkout...');
+    } else {
+      notify('error','Please login first to checkout..');
+      setTimeout(() => {
+        navigate('/login');
+      }, 4000);
+    }
   };
+  
+  
 
   return (
     <div className="container my-5">
@@ -98,6 +125,7 @@ const Cart = () => {
           </div>
         </>
       )}
+      <ToastContainer />
     </div>
   );
 };

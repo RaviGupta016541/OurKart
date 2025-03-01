@@ -1,20 +1,22 @@
-import React, { useEffect, useState,useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { store } from '../../App';
 
-
-
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]); // Store filtered products
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const {cart,setCart}=useContext(store)
+  const { cart, setCart } = useContext(store);
+  const [searchQuery, setSearchQuery] = useState(''); // Track search query
+
   useEffect(() => {
     // Fetch data using axios
     axios.get('https://dummyjson.com/products')
       .then((response) => {
         setProducts(response.data.products); // Store the products data
+        setFilteredProducts(response.data.products); // Also store in filteredProducts
         setLoading(false);
       })
       .catch((error) => {
@@ -24,26 +26,36 @@ const Home = () => {
       });
   }, []);
 
-  
-  const updateCart=(id,title,price)=>{
+  const updateCart = (id, title, price) => {
     const cartObj = {
-        id,
-        title,
-        price,
-        quantity: 1, 
-      };
+      id,
+      title,
+      price,
+      quantity: 1,
+    };
 
     const existingProduct = cart.find(c => c.id === cartObj.id);
 
-    if(existingProduct){
-        alert("Product already added.")
-    }else{
-        setCart([...cart,cartObj]);
+    if (existingProduct) {
+      alert("Product already added.");
+    } else {
+      setCart([...cart, cartObj]);
     }
-    console.log(cartObj)
-  }
+    console.log(cartObj);
+  };
 
+  // Function to handle search input change
+  const handleSearchChange = (event) => {
+    const query = event.target.value;
+    setSearchQuery(query);
 
+    // Filter products based on title
+    const filtered = products.filter(product =>
+      product.title.toLowerCase().includes(query.toLowerCase())
+    );
+
+    setFilteredProducts(filtered); // Update filtered products based on search query
+  };
 
   // Function to truncate description to 10 words
   const truncateDescription = (description) => {
@@ -61,15 +73,29 @@ const Home = () => {
       </div>
     </div>
   );
+
   if (error) return <div className="alert alert-danger">{error}</div>;
 
   return (
-      
-            
     <div className="container mt-5">
       <h1 className="text-center mb-4">Products</h1>
+
+      {/* Search Bar */}
+{/* Search Bar */}
+<div className="mb-4 d-flex justify-content-center">
+  <div className="col-12 col-md-6 col-lg-4">
+    <input
+      type="text"
+      className="form-control border border-primary border-3"
+      placeholder="Search product "
+      value={searchQuery}
+      onChange={handleSearchChange}
+    />
+  </div>
+</div>
+
       <div className="row">
-        {products.map((product) => {
+        {filteredProducts.map((product) => {
           // Format the price to 2 decimal places
           const formattedPrice = (product.price * 10).toFixed(2);
           const formattedRating = product.rating.toFixed(1);
@@ -101,22 +127,17 @@ const Home = () => {
                   <div className="d-flex justify-content-between align-items-center">
                     <p className="text-primary font-weight-bold">₹{formattedPrice}</p>
                     <div>
-                      <button  className="btn btn-primary btn-sm" onClick={()=>updateCart(product.id,product.title,product.price)}>Add to Cart</button>
+                      <button className="btn btn-primary btn-sm" onClick={() => updateCart(product.id, product.title, product.price)}>Add to Cart</button>
                       <Link to={`/product/${product.id}`} className="btn btn-outline-secondary btn-sm ms-2">View More</Link>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          
-
           );
-          
-          
         })}
       </div>
     </div>
-        
   );
 };
 

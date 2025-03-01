@@ -66,7 +66,8 @@ const Header = () => {
             <li className="nav-item">
               {user.username ? (
                 <>
-                  <span className="me-2 text-dark">Hello, {user.username}</span>
+                {/* <Link to={`/product/${product.id}`} */}
+                  <span className="me-2 text-dark"><Link to={`/userProfile/${user.id}`} > Hello, {user.username} </Link></span>
                   <button className="btn btn-outline-danger" onClick={handleLogout}>
                     Logout
                   </button>

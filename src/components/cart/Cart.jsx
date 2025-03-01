@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
 const Cart = () => {
-  const { cart,setCart ,user}= useContext(store);
+  const { cart, setCart ,user}= useContext(store);
   const navigate = useNavigate();
   const notify = (type, message) => {
     // Dynamically call the correct toast method based on the `type`

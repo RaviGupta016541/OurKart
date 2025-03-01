@@ -10,6 +10,7 @@ import ViewProduct from './components/product/ViewProduct'
 import Cart from './components/cart/Cart';
 import AdminDashboard from './components/admin/AdminDashboard';
 import Login from './components/user/Login';
+import UserProfile from './components/user/UserProfile';
 
 export const store=createContext();
 //export const storeUser=createContext();
@@ -33,8 +34,10 @@ function App() {
         <Route path='/contact' element={<ContactUs/>} />
         <Route path='/cart' element={<Cart/>} />
         <Route path='/product/:id' element={<ViewProduct/>} />
+        <Route path='/userProfile/:id' element={<UserProfile/>} />
         <Route path='/admin' element={<AdminDashboard/>} />
         <Route path='/login' element={<Login/>} />
+
       </Routes>
      </store.Provider>
      </BrowserRouter>
